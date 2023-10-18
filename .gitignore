@@ -1,3 +1,8 @@
 venv/
 wandb/
 runs/
+.idea
+__pycache__
+SubtaskA
+SubtaskB
+SubtaskC
