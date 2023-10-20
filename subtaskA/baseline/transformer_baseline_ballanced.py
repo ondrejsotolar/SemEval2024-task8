@@ -8,12 +8,13 @@ from sklearn.model_selection import train_test_split
 from scipy.special import softmax
 import argparse
 import logging
+import wandb
 
 from data_processing.utils import oversample
 
 
 def preprocess_function(examples, **fn_kwargs):
-    return fn_kwargs['tokenizer'](examples["text"], truncation=True)
+    return fn_kwargs['tokenizer'](examples["text"], truncation=True, max_length=512)
 
 
 def get_data(train_path, test_path, random_seed):
@@ -68,11 +69,12 @@ def fine_tune(train_df, valid_df, checkpoints_path, id2label, label2id, model):
         learning_rate=2e-5,
         per_device_train_batch_size=16,
         per_device_eval_batch_size=16,
-        num_train_epochs=3,
+        num_train_epochs=1,
         weight_decay=0.01,
         evaluation_strategy="epoch",
         save_strategy="epoch",
         load_best_model_at_end=True,
+        save_total_limit=5
     )
 
     trainer = Trainer(
@@ -131,6 +133,7 @@ def test(test_df, model_path, id2label, label2id):
 
 
 if __name__ == '__main__':
+    wandb.init("SemEval24-task8")
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--train_file_path", "-tr", required=True, help="Path to the train file.", type=str)

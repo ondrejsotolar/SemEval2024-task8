@@ -6,3 +6,5 @@ __pycache__
 SubtaskA
 SubtaskB
 SubtaskC
+data
+distilbert-base-uncased
