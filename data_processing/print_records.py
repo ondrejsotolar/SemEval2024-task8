@@ -7,16 +7,7 @@ import sys
 import pandas as pd
 
 
-def get_data(train_path):
-    """
-    function to read dataframe with columns
-    """
-    train_df = pd.read_json(train_path, lines=True)
-    return train_df
-
-
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--file_path", "-p", required=True, help="Path to the file.", type=str)
     parser.add_argument("--n_records", "-n", required=True, help="n records", type=int)
@@ -29,7 +20,7 @@ if __name__ == '__main__':
         logging.error("File doesnt exists: {}".format(file_path))
         raise ValueError("File doesnt exists: {}".format(file_path))
 
-    df = get_data(file_path)
+    df = pd.read_json(file_path, lines=True)
     if args.clazz >= 0:
         df = df[df["label"] == args.clazz]
     print(df.head(args.n_records).to_json())
